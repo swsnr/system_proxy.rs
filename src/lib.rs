@@ -10,6 +10,7 @@
 //!
 //! TODO: Extensive documentation, samples, and OS specifics.
 
+use env::{EnvNoProxy, EnvProxies};
 use url::Url;
 
 mod noproxy;
@@ -30,22 +31,48 @@ use unix::UnixProxyResolver as SystemProxyResolverImpl;
 ///
 /// Resolve proxies from system configuration, and through operating system APIs.
 pub struct SystemProxyResolver {
-    inner: SystemProxyResolverImpl,
+    env_proxies: EnvProxies,
+    env_no_proxy: EnvNoProxy,
+    system: SystemProxyResolverImpl,
 }
 
 impl SystemProxyResolver {
     /// Create a new system proxy resolver.
-    pub fn new() -> Self {
+    ///
+    /// Creates an instance of the standard proxy resolver for the current operating system and
+    /// uses the given environment proxy settings.
+    pub fn new(env_proxies: EnvProxies, env_no_proxy: EnvNoProxy) -> Self {
         Self {
-            inner: SystemProxyResolverImpl::default(),
+            env_proxies,
+            env_no_proxy,
+            system: SystemProxyResolverImpl::default(),
         }
+    }
+
+    /// Create a system proxy resolver which never looks at the environment.
+    ///
+    /// This resolver will only use the standard proxy resolver of the operating system.
+    pub fn no_env() -> Self {
+        Self::new(EnvProxies::unset(), EnvNoProxy::none())
     }
 
     /// Resolve system proxy to use for `url`.
     ///
     /// Return the proxy URL to use or `None` for a direct connection.
     ///
-    /// # Linux and other unix systems
+    /// # Environment
+    ///
+    /// On all systems this resolver first looks at the proxy settings in the environment, per
+    /// [`env::EnvProxies`] and [`env::EnvNoProxy`].
+    ///
+    /// The proxies specified in the environment take precedence over the system proxy, and the
+    /// system proxy is not consulted for URLs that match the [`env::EnvNoProxy`] settings.
+    /// This allows to quickly disable all proxying for a given application by setting `$no_proxy`
+    /// to `*`, even if the appliation looks up a system proxy.
+    ///
+    /// # Operating system proxy resolver
+    ///
+    /// ## Linux and other unix systems
     ///
     /// On Linux and other Unix systems this function checks Gnome's proxy configuration through
     /// the Gio API, if the corresponding `gio` feature is enabled (default).  This enables support
@@ -56,11 +83,11 @@ impl SystemProxyResolver {
     /// function falls back to the standard environment variables `HTTP_PROXY`, `HTTPS_PROXY` and
     /// `NO_PROXY`, as well as their lower-case variants, through [env_proxy].
     ///
-    /// # MacOS
+    /// ## MacOS
     ///
     /// MacOS is not supported currently.  Pull requests welcome.
     ///
-    /// # Windows
+    /// ## Windows
     ///
     /// On Windows this function uses the WinHTTP API to resolve the Windows system proxy
     /// configuration.  However it disables automatic resolution of PAC URLs through DHCP or DNS
@@ -68,12 +95,21 @@ impl SystemProxyResolver {
     /// synchronously.  If you require support for this kind of setup please refer to the async
     /// API.
     pub fn for_url(&self, url: &Url) -> Option<Url> {
-        self.inner.for_url(url)
+        if self.env_no_proxy.matches(url) {
+            None
+        } else {
+            self.env_proxies
+                .for_url(url)
+                .or_else(|| self.system.for_url(url))
+        }
     }
 }
 
 impl Default for SystemProxyResolver {
     fn default() -> Self {
-        Self::new()
+        Self::new(
+            EnvProxies::from_curl_env(),
+            EnvNoProxy::from_curl_env().unwrap_or_else(EnvNoProxy::none),
+        )
     }
 }
