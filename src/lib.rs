@@ -79,10 +79,6 @@ impl SystemProxyResolver {
     /// for more advanced proxy configuration schemes, in particular PAC URLs for proxy
     /// configuration.
     ///
-    /// If the `gio` feature is disabled or access to Gnome's proxy configuration failed this
-    /// function falls back to the standard environment variables `HTTP_PROXY`, `HTTPS_PROXY` and
-    /// `NO_PROXY`, as well as their lower-case variants, through [env_proxy].
-    ///
     /// ## MacOS
     ///
     /// MacOS is not supported currently.  Pull requests welcome.

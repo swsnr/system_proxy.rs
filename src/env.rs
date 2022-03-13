@@ -90,7 +90,7 @@ impl EnvNoProxy {
 
     /// Parse a curl no proxy rule from `value`.
     ///
-    /// See [`from_curl_env`] for the details of the format.
+    /// See [`Self::from_curl_env()`] for the details of the format.
     pub fn parse_curl_env<S: AsRef<str>>(value: S) -> Self {
         let value = value.as_ref().trim();
         if value == "*" {
@@ -230,8 +230,8 @@ fn lookup_url(var: &str) -> Option<Url> {
 impl EnvProxyResolver {
     /// Get proxy rules from environment variables used by curl.
     ///
-    /// See [`EnvProxies::parse_curl_env`] and [`EnvNoProxy::parse_curl_env`] for details of the
-    /// variables used and their formats.
+    /// See [`EnvProxies::from_curl_env()`] and [`EnvNoProxy::from_curl_env()`] for details of
+    /// the variables used and their formats.
     ///
     /// This function interprets the environment as does curl, per its documentation, see
     /// [`curl(1)`](https://curl.se/docs/manpage.html).
