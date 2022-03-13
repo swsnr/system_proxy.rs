@@ -1,0 +1,31 @@
+[package]
+name = "system_proxy"
+version = "0.1.0"
+authors = ["Sebastian Wiesner <sebastian@swsnr.de>"]
+edition = "2021"
+rust-version = "1.59"
+description = "Get the system-wide HTTP proxy"
+documentation = "https://docs.rs/system_proxy"
+readme = "README.md"
+homepage = "https://codeberg.org/flausch/system_proxy.rs"
+repository = "https://codeberg.org/flausch/system_proxy.rs.git"
+license = "MPL-2.0"
+keywords = ["HTTP", "proxy", "sytem-wide"]
+categories = ["api-bindings", "os", "network-programming", "web-programming::http-client"]
+
+[features]
+default = ["gnome"]
+# Enable system proxy information in Gnome.  This does not depend on any actual
+# Gnome libraries, but only on Glib, but it needs a name different than those of
+# the underlying gio and glib dependencies due to limitations in naming cargo
+# features.
+gnome = ["gio", "glib"]
+
+[dependencies]
+log = "0.4.14"
+url = "2.2.2"
+
+[target.'cfg(all(unix, not(target_os="mac_os")))'.dependencies]
+gio = { version = "0.15.7", optional = true }
+glib = { version = "0.15.9", optional = true, features = ["v2_66"] }
+
