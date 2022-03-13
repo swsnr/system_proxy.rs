@@ -25,6 +25,10 @@ gnome = ["gio", "glib"]
 log = "0.4.14"
 url = "2.2.2"
 
+[dev-dependencies]
+temp-env = "0.2.0"
+pretty_assertions = "1.2.0"
+
 [target.'cfg(all(unix, not(target_os="mac_os")))'.dependencies]
 gio = { version = "0.15.7", optional = true }
 glib = { version = "0.15.9", optional = true, features = ["v2_66"] }
