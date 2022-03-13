@@ -13,7 +13,6 @@
 use env::{EnvNoProxy, EnvProxies};
 use url::Url;
 
-mod noproxy;
 mod types;
 
 pub mod env;
@@ -21,7 +20,6 @@ pub mod env;
 #[cfg(all(unix, not(target_os = "mac_os")))]
 pub mod unix;
 
-pub use noproxy::NoProxy;
 pub use types::ProxyResolver;
 
 #[cfg(all(unix, not(target_os = "mac_os")))]
