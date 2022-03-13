@@ -100,6 +100,13 @@ impl SystemProxyResolver {
 }
 
 impl Default for SystemProxyResolver {
+    /// Create the default system proxy resolver.
+    ///
+    /// This proxy resolver uses the curl environment by default (see
+    /// [`env::EnvProxies::from_curl_env()`] and [`env::EnvNoProxy::from_curl_env()`]) by default
+    /// and falls back to the standard proxy resolver of the operating system.
+    ///
+    /// See [`SystemProxyResolver::for_url`] for more information about how the proxy is resolved.
     fn default() -> Self {
         Self::new(
             EnvProxies::from_curl_env(),
