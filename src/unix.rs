@@ -9,7 +9,11 @@
 //! Notably this module provides the [`crate::unix::gio`] submodule which provides a proxy resolver
 //! for the Glib ecosystem, if the `gnome` feature is enabled.
 //!
-//! It exports the type [`UnixProxyResolver`] as an appropriate default proxy resolver.
+//! It exports the type [`UnixProxyResolver`] as an appropriate default proxy resolver: If the
+//! `gnome` feature is enabled it binds to a proxy resolver for the Gio library which in turn uses
+//! Gnome's per-user proxy configuration.  Otherwise it binds to a no-op resolver because there is
+//! no other source of global proxy configuration on Unix systems; in this case the application can
+//! only rely on the proxy environment offered by the [`env`] module.
 
 #[cfg(feature = "gnome")]
 pub mod gio;

@@ -5,6 +5,20 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.[cfg(test)]
 
 //! Resolve proxies via environment variables.
+//!
+//! This module provides a proxy resolver using the standard HTTP proxy environment variables, as
+//! well as the specific parts of that proxy resolver.
+//!
+//! The [`EnvProxyResolver::from_curl_env`] provides a proxy resolver which uses the [curl](https://curl.se/)
+//! environment variables to resolve a proxy for a given URL.
+//!
+//! It consists of a [`EnvProxies`] struct which extracts the actual proxy URLs out of the
+//! environment, and a [`EnvNoProxy`] struct which parses the no proxy rules from `$no_proxy`.
+//! Both structs are also exposed to allow applications to freely combine them with the underlying
+//! operating system resolver, however the structure of the rules understood by [`EnvNoProxy`] is
+//! hidden because it is subject to change–unfortunately the semantics of `$no_proxy` varies wildly
+//! between different libraries and applications, so this crate may receive some updates in that
+//! direction in future releases.
 
 use url::{Host, Url};
 

@@ -4,7 +4,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.[cfg(test)]
 
-//! Get system proxy from Gio.
+//! Get system proxy from Gio, that is, Gnome system settings.
+//!
+//! This proxy resolver supports all features of Gnome system settings, including PAC URLs.
 
 use gio::glib;
 use gio::traits::ProxyResolverExt;
@@ -14,7 +16,7 @@ use url::Url;
 /// A proxy resolver for Gio and Glib.
 ///
 /// This resolver uses configuration from GSettings, i.e. Gnome configuration.  Depending on how
-/// Gnome is set up it supports simple proxy settings as well as PAC configuration.
+/// Gnome is set up it supports simple proxy settings as well as PAC URLs.
 pub struct GioProxyResolver;
 
 impl GioProxyResolver {

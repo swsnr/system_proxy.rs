@@ -8,7 +8,77 @@
 
 //! Resolve system proxies.
 //!
-//! TODO: Extensive documentation, samples, and OS specifics.
+//! # Simple usage
+//!
+//! The [`default()`] function returns the default proxy resolver of the operating system, wrapped
+//! with a [`env::EnvProxyResolver`] which looks at the standard `$HTTP_PROXY` and friends used by
+//! most command line utilities:
+//!
+//! ```
+//! let proxy = system_proxy::default();
+//! let client = reqwest::blocking::Client::builder()
+//!     .user_agent(concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION")))
+//!     .proxy(reqwest::Proxy::custom(move |u| proxy.for_url(u)))
+//!     .build()
+//!     .unwrap();
+//!
+//! let response = client.get("https://httpbin.org/status/200").send().unwrap();
+//! println!("Status code: {}", response.status());
+//! ```
+//!
+//! ## Proxy resolvers
+//!
+//! A [`ProxyResolver`] provides the [`ProxyResolver::for_url()`] method which returns the HTTP
+//! proxy URL to use for the given URL, Or `None` if a direct connection should be used.
+//!
+//! # Advanced usage
+//!
+//! This crate also offers direct access to the operating system proxy resolver, via exported
+//! modules such as [`unix`].  It also offers direct access to a resolver which uses the standard
+//! `$HTTP_PROXY` etc. environment variables, via [`env::EnvProxyResolver`].  The corresponding
+//! module also exposes the the components of the proxy resolver, namely access to the proxy
+//! variables as well as to `$NO_PROXY` rules, which allows for flexible composition of proxy
+//! rules.
+//!
+//! # Operating system support
+//!
+//! In addition to environment variables this crate mainly exposes the default proxy resolver of
+//! the underlying operating system.
+//!
+//! ## Linux and other Unix systems
+//!
+//! Linux and other related Unix systems such as FreeBSD do not offer a standard system-wide HTTP
+//! proxy resolver.  Most unix programs use the wide-spread `$HTTP_PROXY` etc. environment
+//! variables.
+//!
+//! However these variables suffer from various drawbacks: Applications using these variables cannot
+//! dynamically react on changes to the network connection, e.g. disconnecting from a public Wifi
+//! and connecting to the company ethernet, each using a different proxy.  Instead the application
+//! needs to restart to obtain new values for the proxy configuration, which often requires users
+//! to restart their entire session to get an updated proxy environment.  These applications also
+//! lack support for more sophisticated proxy configuration schemes, namely auto-configuration
+//! URLs, which are widely used in enterprise environments.
+//!
+//! For this reason Gnome at least offers a separate per-user proxy configuration which allows to
+//! change the proxy dynamically for all running applications, and adds support for
+//! auto-configuration URLs.  Most Glib/Gio based applications use this infrastructure.
+//!
+//! This crate binds to Gio and uses the Gio proxy resolver to make use of this Gnome-wide proxy
+//! configuration.
+//!
+//! ## Windows
+//!
+//! Windows support is planned, see <https://codeberg.org/flausch/system_proxy.rs/issues/2>.
+//!
+//! ## macOS
+//!
+//! MacOS support may come at some point, see <https://codeberg.org/flausch/system_proxy.rs/issues/4>.
+//!
+//! # Async API
+//!
+//! An async API is planned, see <https://codeberg.org/flausch/system_proxy.rs/issues/3>, however
+//! most HTTP clients such as reqwest only offer a synchronous API to set the HTTP proxy, so this
+//! has somewhat lower priority.
 
 use env::{EnvNoProxy, EnvProxies};
 use url::Url;
