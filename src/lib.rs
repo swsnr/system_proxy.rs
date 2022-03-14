@@ -114,3 +114,8 @@ impl Default for SystemProxyResolver {
         )
     }
 }
+
+/// Return the default system proxy resolver, i.e. [`SystemProxyResolver::default()`].
+pub fn default() -> SystemProxyResolver {
+    SystemProxyResolver::default()
+}

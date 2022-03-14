@@ -25,3 +25,6 @@ cargo build --all-targets ${CARGOFLAGS:-}
 cargo clippy --all-targets ${CARGOFLAGS:-}
 cargo test --all-targets ${CARGOFLAGS:-}
 cargo doc ${CARGOFLAGS:-}
+
+# Run examples
+cargo run --example reqwest
