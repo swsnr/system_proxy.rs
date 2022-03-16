@@ -89,11 +89,16 @@ pub mod env;
 
 #[cfg(all(unix, not(target_os = "mac_os")))]
 pub mod unix;
+#[cfg(windows)]
+pub mod windows;
 
 pub use types::ProxyResolver;
 
 #[cfg(all(unix, not(target_os = "mac_os")))]
 use unix::UnixProxyResolver as SystemProxyResolverImpl;
+
+#[cfg(windows)]
+use crate::windows::WinHttpProxyResolver as SystemProxyResolverImpl;
 
 /// The system proxy resolver.
 ///
