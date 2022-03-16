@@ -38,3 +38,8 @@ glib = { version = "0.15.9", optional = true, features = ["v2_66"] }
 allow-branch = ['main']
 sign-commit = true
 sign-tag = true
+
+[package.metadata.docs.rs]
+# On docs.rs build glib and gio with the dox feature to disable lookup of system
+# dependencies which are not available on docs.rs
+features = ["glib/dox", "gio/dox"]
