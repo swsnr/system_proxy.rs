@@ -7,6 +7,8 @@
 //! Get system proxy from Gio, that is, Gnome system settings.
 //!
 //! This proxy resolver supports all features of Gnome system settings, including PAC URLs.
+//!
+//! This module requires the `gnome` feature which is enabled by default.
 
 use gio::glib;
 use gio::traits::ProxyResolverExt;
