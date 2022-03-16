@@ -5,6 +5,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] – 2022-03-16
+
 ### Fixed
 - Correctly export fallback resolver if `gnome` feature is disabled (see [#8]).
 
@@ -16,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for HTTP proxies in environment variables.
 - Support for Gnome system proxy.
 
-[Unreleased]: https://codeberg.org/flausch/system_proxy.rs/compare/v0.1.0...HEAD
+[Unreleased]: https://codeberg.org/flausch/system_proxy.rs/compare/v0.1.1...HEAD
+[0.1.1]: https://codeberg.org/flausch/system_proxy.rs/compare/v0.1.0...v0.1.1
 [0.1.0]: https://codeberg.org/flausch/system_proxy.rs/src/tag/v0.1.0
 
