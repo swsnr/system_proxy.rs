@@ -265,6 +265,8 @@ impl EnvProxyResolver {
     }
 }
 
+static_assertions::assert_impl_all!(EnvProxyResolver: Send, Sync);
+
 impl ProxyResolver for EnvProxyResolver {
     fn for_url(&self, url: &Url) -> Option<Url> {
         self.proxies.for_url(url).and_then(|proxy| {

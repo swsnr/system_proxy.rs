@@ -169,6 +169,8 @@ impl SystemProxyResolver {
     }
 }
 
+static_assertions::assert_impl_all!(SystemProxyResolver: Send, Sync);
+
 impl Default for SystemProxyResolver {
     /// Create the default system proxy resolver.
     ///

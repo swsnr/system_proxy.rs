@@ -28,6 +28,8 @@ impl GioProxyResolver {
     /// configuration fails or the proxy configuration returns an invalid URL return the
     /// corresponding error.
     pub fn lookup(&self, url: &Url) -> Result<Option<Url>, glib::Error> {
+        // We always construct a new proxy resolver per call, because gojects and thus
+        // gio::ProxyResolver are not thread-thread safe, so this struct wouldn't be Send + Sync.
         let proxies = gio::ProxyResolver::default().lookup(url.as_str(), gio::Cancellable::NONE)?;
         match proxies.get(0) {
             None => Ok(None),
@@ -41,6 +43,8 @@ impl GioProxyResolver {
         }
     }
 }
+
+static_assertions::assert_impl_all!(GioProxyResolver: Send, Sync);
 
 impl crate::types::ProxyResolver for GioProxyResolver {
     fn for_url(&self, url: &Url) -> Option<Url> {
