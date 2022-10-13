@@ -34,7 +34,7 @@
 //! # Advanced usage
 //!
 //! This crate also offers direct access to the operating system proxy resolver, via exported
-//! modules such as [`unix`].  It also offers direct access to a resolver which uses the standard
+//! modules such as `unix`.  It also offers direct access to a resolver which uses the standard
 //! `$HTTP_PROXY` etc. environment variables, via [`env::EnvProxyResolver`].  The corresponding
 //! module also exposes the the components of the proxy resolver, namely access to the proxy
 //! variables as well as to `$NO_PROXY` rules, which allows for flexible composition of proxy
