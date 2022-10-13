@@ -25,7 +25,7 @@ use url::{Host, Url};
 use crate::ProxyResolver;
 
 /// A single rule for when not to use a proxy.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 enum NoProxyRule {
     MatchExact(String),
     MatchSubdomain(String),
@@ -160,7 +160,7 @@ impl EnvNoProxy {
 }
 
 /// Proxies extracted from the environment.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EnvProxies {
     http: Option<Url>,
     https: Option<Url>,
