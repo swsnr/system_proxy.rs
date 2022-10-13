@@ -22,19 +22,4 @@ pub mod gio;
 pub use self::gio::GioProxyResolver as UnixProxyResolver;
 
 #[cfg(not(feature = "gnome"))]
-#[derive(Default)]
-/// A proxy resolver which never resolves a proxy.
-///
-/// Used as a fallback proxy resolver if no specific unix system resolver is enabled at compile
-/// time.  In this case [`crate::SystemProxyResolver`] only resolves proxies from the process environment.
-pub struct NoProxyResolver;
-
-#[cfg(not(feature = "gnome"))]
-impl crate::ProxyResolver for NoProxyResolver {
-    fn for_url(&self, _url: &url::Url) -> Option<url::Url> {
-        None
-    }
-}
-
-#[cfg(not(feature = "gnome"))]
-pub use NoProxyResolver as UnixProxyResolver;
+pub use crate::NoProxyResolver as UnixProxyResolver;
