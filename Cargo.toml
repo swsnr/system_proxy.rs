@@ -7,11 +7,16 @@ rust-version = "1.59"
 description = "Get the system-wide HTTP proxy"
 documentation = "https://docs.rs/system_proxy"
 readme = "README.md"
-homepage = "https://codeberg.org/flausch/system_proxy.rs"
-repository = "https://codeberg.org/flausch/system_proxy.rs.git"
+homepage = "https://github.com/lunaryorn/system_proxy.rs"
+repository = "https://github.com/lunaryorn/system_proxy.rs.git"
 license = "MPL-2.0"
 keywords = ["HTTP", "proxy", "sytem-wide"]
-categories = ["api-bindings", "os", "network-programming", "web-programming::http-client"]
+categories = [
+    "api-bindings",
+    "os",
+    "network-programming",
+    "web-programming::http-client",
+]
 
 [features]
 default = ["gnome"]
