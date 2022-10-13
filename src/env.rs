@@ -365,7 +365,7 @@ mod tests {
         assert!(!rules.matches(&Url::parse("http://192.168.12.101/foo").unwrap()));
         assert!(!rules.matches(&Url::parse("http://192.168.12/foo").unwrap()));
         assert!(!rules.matches(&Url::parse("http://fooexample.com/foo").unwrap()));
-        assert!(!rules.matches(&Url::parse("http://codeberg.org/flausch").unwrap()));
+        assert!(!rules.matches(&Url::parse("http://github.com/lunaryorn").unwrap()));
     }
 
     #[test]
@@ -524,11 +524,11 @@ mod tests {
             no_proxy: EnvNoProxy::none(),
         };
         assert_eq!(
-            resolver.for_url(&Url::parse("http://codeberg.org").unwrap()),
+            resolver.for_url(&Url::parse("http://github.com").unwrap()),
             Some(Url::parse("http://httproxy.example.com:1284").unwrap())
         );
         assert_eq!(
-            resolver.for_url(&Url::parse("https://codeberg.org").unwrap()),
+            resolver.for_url(&Url::parse("https://github.com").unwrap()),
             None
         );
     }
@@ -543,11 +543,11 @@ mod tests {
             no_proxy: EnvNoProxy::none(),
         };
         assert_eq!(
-            resolver.for_url(&Url::parse("https://codeberg.org").unwrap()),
+            resolver.for_url(&Url::parse("https://github.com").unwrap()),
             Some(Url::parse("http://httpsproxy.example.com:1284").unwrap())
         );
         assert_eq!(
-            resolver.for_url(&Url::parse("http://codeberg.org").unwrap()),
+            resolver.for_url(&Url::parse("http://github.com").unwrap()),
             None
         );
     }
@@ -562,11 +562,11 @@ mod tests {
             no_proxy: EnvNoProxy::all(),
         };
         assert_eq!(
-            resolver.for_url(&Url::parse("https://codeberg.org").unwrap()),
+            resolver.for_url(&Url::parse("https://github.com").unwrap()),
             None
         );
         assert_eq!(
-            resolver.for_url(&Url::parse("http://codeberg.org").unwrap()),
+            resolver.for_url(&Url::parse("http://github.com").unwrap()),
             None
         );
 
@@ -575,14 +575,14 @@ mod tests {
                 http: Some(Url::parse("http://httproxy.example.com:1284").unwrap()),
                 https: Some(Url::parse("http://httpsproxy.example.com:1284").unwrap()),
             },
-            no_proxy: EnvNoProxy::parse_curl_env("codeberg.org"),
+            no_proxy: EnvNoProxy::parse_curl_env("github.com"),
         };
         assert_eq!(
-            resolver.for_url(&Url::parse("https://codeberg.org").unwrap()),
+            resolver.for_url(&Url::parse("https://github.com").unwrap()),
             None
         );
         assert_eq!(
-            resolver.for_url(&Url::parse("http://codeberg.org").unwrap()),
+            resolver.for_url(&Url::parse("http://github.com").unwrap()),
             None
         );
     }
@@ -597,11 +597,11 @@ mod tests {
             no_proxy: EnvNoProxy::none(),
         };
         assert_eq!(
-            resolver.for_url(&Url::parse("https://codeberg.org").unwrap()),
+            resolver.for_url(&Url::parse("https://github.com").unwrap()),
             Some(Url::parse("http://httpsproxy.example.com:1284").unwrap())
         );
         assert_eq!(
-            resolver.for_url(&Url::parse("http://codeberg.org").unwrap()),
+            resolver.for_url(&Url::parse("http://github.com").unwrap()),
             Some(Url::parse("http://httproxy.example.com:1284").unwrap())
         );
 
@@ -610,14 +610,14 @@ mod tests {
                 http: Some(Url::parse("http://httproxy.example.com:1284").unwrap()),
                 https: Some(Url::parse("http://httpsproxy.example.com:1284").unwrap()),
             },
-            no_proxy: EnvNoProxy::parse_curl_env("github.com,codeberg.net"),
+            no_proxy: EnvNoProxy::parse_curl_env("github.net"),
         };
         assert_eq!(
-            resolver.for_url(&Url::parse("https://codeberg.org").unwrap()),
+            resolver.for_url(&Url::parse("https://github.com").unwrap()),
             Some(Url::parse("http://httpsproxy.example.com:1284").unwrap())
         );
         assert_eq!(
-            resolver.for_url(&Url::parse("http://codeberg.org").unwrap()),
+            resolver.for_url(&Url::parse("http://github.com").unwrap()),
             Some(Url::parse("http://httproxy.example.com:1284").unwrap())
         );
     }

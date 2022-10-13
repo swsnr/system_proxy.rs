@@ -68,15 +68,15 @@
 //!
 //! ## Windows
 //!
-//! Windows support is planned, see <https://codeberg.org/flausch/system_proxy.rs/issues/2>.
+//! Windows support is planned, see <https://github.com/lunaryorn/system_proxy.rs/issues/5>.
 //!
 //! ## macOS
 //!
-//! MacOS support may come at some point, see <https://codeberg.org/flausch/system_proxy.rs/issues/4>.
+//! MacOS support may come at some point, see <https://github.com/lunaryorn/system_proxy.rs/issues/2>.
 //!
 //! # Async API
 //!
-//! An async API is planned, see <https://codeberg.org/flausch/system_proxy.rs/issues/3>, however
+//! An async API is planned, see <https://github.com/lunaryorn/system_proxy.rs/issues/3>, however
 //! most HTTP clients such as reqwest only offer a synchronous API to set the HTTP proxy, so this
 //! has somewhat lower priority.
 
