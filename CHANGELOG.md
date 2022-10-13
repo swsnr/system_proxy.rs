@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Build on Windows.
+- Migrate repository to <https://github.com/lunaryorn/system_proxy.rs>.
 
 ## [0.1.1] – 2022-03-16
 
