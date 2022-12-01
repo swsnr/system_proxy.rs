@@ -365,7 +365,7 @@ mod tests {
         assert!(!rules.matches(&Url::parse("http://192.168.12.101/foo").unwrap()));
         assert!(!rules.matches(&Url::parse("http://192.168.12/foo").unwrap()));
         assert!(!rules.matches(&Url::parse("http://fooexample.com/foo").unwrap()));
-        assert!(!rules.matches(&Url::parse("http://github.com/lunaryorn").unwrap()));
+        assert!(!rules.matches(&Url::parse("http://github.com/swsnr").unwrap()));
     }
 
     #[test]

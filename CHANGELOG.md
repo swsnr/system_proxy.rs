@@ -5,6 +5,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Change Github URL to <https://github.com/swsnr/system_proxy.rs>.
+
 ## [0.1.2] – 2022-10-13
 
 ### Changed
@@ -24,8 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for HTTP proxies in environment variables.
 - Support for Gnome system proxy.
 
-[Unreleased]: https://github.com/lunaryorn/system_proxy.rs/compare/v0.1.2...HEAD
-[0.1.2]: https://github.com/lunaryorn/system_proxy.rs/compare/v0.1.1...v0.1.2
-[0.1.1]: https://github.com/lunaryorn/system_proxy.rs/compare/v0.1.0...v0.1.1
-[0.1.0]: https://github.com/lunaryorn/system_proxy.rs/releases/tag/v0.1.0
+[Unreleased]: https://github.com/swsnr/system_proxy.rs/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/swsnr/system_proxy.rs/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/swsnr/system_proxy.rs/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/swsnr/system_proxy.rs/releases/tag/v0.1.0
 
