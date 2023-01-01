@@ -1,9 +1,5 @@
 updates:
   # Check for updates of crates and actions every month
-  - package-ecosystem: cargo
-    directory: "/"
-    schedule:
-      interval: montly
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
