@@ -5,7 +5,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 fn main() {
-    let proxy = system_proxy::default();
+    let proxy = system_proxy::env::from_curl_env();
     let client = reqwest::blocking::Client::builder()
         .user_agent(concat!(
             env!("CARGO_PKG_NAME"),
@@ -13,12 +13,12 @@ fn main() {
             env!("CARGO_PKG_VERSION")
         ))
         .proxy(reqwest::Proxy::custom(move |url| {
-            let proxy_url = proxy.for_url(url);
+            let proxy_url = proxy.lookup(url);
             match &proxy_url {
                 None => println!("Using direct connection for URL {}", url),
                 Some(u) => println!("Using proxy {} for URL {}", u, url),
             }
-            proxy_url
+            proxy_url.cloned()
         }))
         .build()
         .unwrap();
