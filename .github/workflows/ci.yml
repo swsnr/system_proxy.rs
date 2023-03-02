@@ -29,14 +29,21 @@ jobs:
           - '1.66.0'
           # The standard Rust version
           - stable
+        include:
+          - os: ubuntu-22.04
+            # We need to explicitly select the async backend for zbus, because we
+            # don't pick one by default.
+            cargoflags: "--all-features --features zbus/tokio"
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
           components: clippy
-      - run: cargo build --all-targets
+      - run: cargo build --all-targets ${{matrix.cargoflags}}
       - run: cargo test
       - if: matrix.rust == 'stable'
-        run: cargo clippy --all-targets
-      - run: cargo doc
+        run: cargo clippy --all-targets ${{matrix.cargoflags}}
+      # Build docs on Linux only, where we have all features available.
+      - run: cargo doc ${{matrix.cargoflags}}
+        if: matrix.os != 'windows-latest'
