@@ -4,33 +4,41 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-//! Get system proxy from Gio, that is, Gnome system settings.
+//! Provide a Gio proxy resolver.
 //!
-//! This proxy resolver supports all features of Gnome system settings, including PAC URLs.
+//! This module prpvides a thin wrapper around [`Gio.ProxyResolver`](https://docs.gtk.org/gio/iface.ProxyResolver.html)
+//! from Glib/Gio, and adds a more convenient [`Url`]-based API around the underlying API.
 //!
-//! This module requires the `gnome` feature which is enabled by default.
+//! This module requires the `gio` feature.
 
 use gio::glib;
 use gio::traits::ProxyResolverExt;
-use log::{debug, error};
 use url::Url;
 
-/// A proxy resolver for Gio and Glib.
+/// A convenience wrapper around [`gio::ProxyResolver`].
 ///
-/// This resolver uses configuration from GSettings, i.e. Gnome configuration.  Depending on how
-/// Gnome is set up it supports simple proxy settings as well as PAC URLs.
-pub struct GioProxyResolver;
+/// See [`Gio.ProxyResolver`](https://docs.gtk.org/gio/iface.ProxyResolver.html) for the underlying
+/// Gio type.
+///
+/// This type can be cloned cheaply.
+#[derive(Debug, Clone)]
+pub struct GioProxyResolver {
+    resolver: gio::ProxyResolver,
+}
 
 impl GioProxyResolver {
-    /// Lookup the Gio proxy for the given URL.
+    /// Wrap the given GIO proxy `resolver`.
+    pub fn new(resolver: gio::ProxyResolver) -> Self {
+        Self { resolver }
+    }
+
+    /// Lookup the Gio proxy for the given `url`.
     ///
     /// Return the proxy to use, or `None` for a direct connection.  If accessing the proxy
     /// configuration fails or the proxy configuration returns an invalid URL return the
     /// corresponding error.
-    pub fn lookup(&self, url: &Url) -> Result<Option<Url>, glib::Error> {
-        // We always construct a new proxy resolver per call, because gojects and thus
-        // gio::ProxyResolver are not thread-thread safe, so this struct wouldn't be Send + Sync.
-        let proxies = gio::ProxyResolver::default().lookup(url.as_str(), gio::Cancellable::NONE)?;
+    pub async fn lookup(&self, url: &Url) -> Result<Option<Url>, glib::Error> {
+        let proxies = self.resolver.lookup_future(url.as_str()).await?;
         match proxies.get(0) {
             None => Ok(None),
             Some(url) if url == "direct://" => Ok(None),
@@ -44,24 +52,14 @@ impl GioProxyResolver {
     }
 }
 
-static_assertions::assert_impl_all!(GioProxyResolver: Send, Sync);
-
-impl crate::types::ProxyResolver for GioProxyResolver {
-    fn for_url(&self, url: &Url) -> Option<Url> {
-        self.lookup(url)
-            .unwrap_or_else(|error| {
-                error!("Failed to obtain proxy for URL {}: {}", url, error);
-                None
-            })
-            .map(|proxy| {
-                debug!("Obtained proxy {:?} for URL {} from Gio", proxy, url);
-                proxy
-            })
-    }
-}
-
 impl Default for GioProxyResolver {
+    /// Get the default proxy resolver.
+    ///
+    /// See [`gio::ProxyResolver::default`], and [`g_proxy_resolver_get_default`](https://docs.gtk.org/gio/type_func.ProxyResolver.get_default.htmll)
+    /// for the underlying Gio function.
     fn default() -> Self {
-        Self
+        Self {
+            resolver: gio::ProxyResolver::default(),
+        }
     }
 }

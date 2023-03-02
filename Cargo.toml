@@ -19,12 +19,9 @@ categories = [
 ]
 
 [features]
-default = ["gnome"]
-# Enable system proxy information in Gnome.  This does not depend on any actual
-# Gnome libraries, but only on Glib, but it needs a name different than those of
-# the underlying gio and glib dependencies due to limitations in naming cargo
-# features.
-gnome = ["gio", "glib"]
+default = ["gio"]
+# Enable the Gio proxy resolver.  This builds and links against Glib.
+gio = ["dep:glib", "dep:gio"]
 
 [dependencies]
 log = "0.4.17"
