@@ -1,6 +1,6 @@
 [package]
 name = "system_proxy"
-version = "0.1.3"
+version = "0.2.0"
 authors = ["Sebastian Wiesner <sebastian@swsnr.de>"]
 edition = "2021"
 rust-version = "1.66"
