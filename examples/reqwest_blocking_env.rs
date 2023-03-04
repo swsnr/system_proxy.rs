@@ -1,8 +1,11 @@
-// Copyright (c) 2022 Sebastian Wiesner <sebastian@swsnr.de>
+// Copyright (c) Sebastian Wiesner <sebastian@swsnr.de>
 //
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+//! This example demonstrates how to use environment proxies with
+//! the reqwest library.
 
 fn main() {
     let proxy = system_proxy::env::from_curl_env();

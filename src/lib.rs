@@ -6,37 +6,30 @@
 
 #![deny(warnings, missing_docs, clippy::all)]
 
-//! Resolve system proxies with various resolvers.
+//! Lookup HTTP proxies in various ways.
 //!
-//! Provided resolvers:
+//! ## Available proxy lookup methods
 //!
-//! - [``]
+//! - [`env::EnvProxies`] looks up HTTP proxies in the wide-spread `$http_proxy` and
+//!   related environment variables.  It aims to be compatible to the well-known `curl` utility.
+//! - [`unix::GioProxyResolver`] asynchronously looks up HTTP proxies through Gio and
+//!   Glib, i.e. the foundational library of the Gnome desktop environment.  It links against the
+//!   Glib library, but in turn supports dynamic proxy configuration, i.e. proxy configuration
+//!   which changes while the process is running, and proxy auto-configuration.
+//!   This requires the `gio` feature.
+//! - [`unix::FreedesktopPortalProxyResolver`] asynchronously looks up HTTP proxies
+//!   through the Freedesktop Portal proxy resolver over DBus.  The exact features supported by
+//!   this resolver depend on the portal implementation; for Gnome at least the portal has the same
+//!   set of features as the Gio resolver.  This resolver does not link against any native
+//!   libraries, but in turn requires the [`zbus`] crate for DBus support, and a running portal
+//!   implementation at runtime.
 //!
 //! # Operating system support
 //!
-//! In addition to environment variables this crate mainly exposes the default proxy resolver of
-//! the underlying operating system.
+//! ## Linux
 //!
-//! ## Linux and other Unix systems
-//!
-//! Linux and other related Unix systems such as FreeBSD do not offer a standard system-wide HTTP
-//! proxy resolver.  Most unix programs use the wide-spread `$HTTP_PROXY` etc. environment
-//! variables.
-//!
-//! However these variables suffer from various drawbacks: Applications using these variables cannot
-//! dynamically react on changes to the network connection, e.g. disconnecting from a public Wifi
-//! and connecting to the company ethernet, each using a different proxy.  Instead the application
-//! needs to restart to obtain new values for the proxy configuration, which often requires users
-//! to restart their entire session to get an updated proxy environment.  These applications also
-//! lack support for more sophisticated proxy configuration schemes, namely auto-configuration
-//! URLs, which are widely used in enterprise environments.
-//!
-//! For this reason Gnome at least offers a separate per-user proxy configuration which allows to
-//! change the proxy dynamically for all running applications, and adds support for
-//! auto-configuration URLs.  Most Glib/Gio based applications use this infrastructure.
-//!
-//! This crate binds to Gio and uses the Gio proxy resolver to make use of this Gnome-wide proxy
-//! configuration.
+//! Use either [`unix::GioProxyResolver`] or [`unix::FreedesktopPortalProxyResolver`] to access
+//! system proxy settings.
 //!
 //! ## Windows
 //!
@@ -47,6 +40,4 @@
 //! MacOS support may come at some point, see <https://github.com/swsnr/system_proxy.rs/issues/2>.
 
 pub mod env;
-
-#[cfg(all(unix, not(target_os = "mac_os")))]
 pub mod unix;
