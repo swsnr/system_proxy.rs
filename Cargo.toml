@@ -27,6 +27,8 @@ gio = ["dep:glib", "dep:gio"]
 # runtime.  However, all major desktop environments on Linux provide this
 # implementation, so it's generally recommended to use this API on Linux.
 portal = ["zbus"]
+# Enable tokio runtime integration. Currently only affects the "portal" feature.
+tokio = ["zbus/tokio"]
 
 [dependencies]
 log = "0.4.17"

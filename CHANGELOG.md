@@ -5,6 +5,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Add `tokio` feature to expose `zbus/tokio`
+
 ## [0.3.0] – 2023-03-12
 
 ### Added
