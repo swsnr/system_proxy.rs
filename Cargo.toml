@@ -53,4 +53,4 @@ all-features = true
 # On docs.rs build glib and gio with the dox feature to disable lookup of system
 # dependencies which are not available on docs.rs.  We also need to pick an
 # async backend for zbus.
-features = ["glib/dox", "gio/dox", "zbus/async-io"]
+features = ["gio/dox", "zbus/async-io"]
